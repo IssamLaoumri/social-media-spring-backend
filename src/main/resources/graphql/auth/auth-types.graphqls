@@ -1,0 +1,52 @@
+type User {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    _username: String!
+    email: String!
+    password: String!
+    roles: [Role]!
+    gender: Gender!
+    bDay: Int!
+    bMonth: Int!
+    bYear: Int!
+    profilePictureUrl: String
+    profileCoverUrl: String
+    accountLocked: Boolean
+    accountExpired: Boolean
+    credentialsExpired: Boolean
+    enabled: Boolean
+}
+
+type Role {
+    id: ID
+    name: ERole
+}
+
+enum Gender {
+    MALE
+    FEMALE
+}
+
+enum ERole {
+    ROLE_ADMIN
+    ROLE_USER
+    ROLE_MODERATOR
+}
+
+input RegisterRequest {
+    firstname: String!
+    lastname: String!
+    email: String!
+    password: String!
+    roles: [String]
+    gender: Gender!
+    bDay: Int!
+    bMonth: Int!
+    bYear: Int!
+}
+
+input LoginRequest {
+    email: String!,
+    password: String!
+}

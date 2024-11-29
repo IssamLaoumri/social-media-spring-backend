@@ -1,0 +1,4 @@
+extend type Mutation {
+    register(input: RegisterRequest!): User!
+    login(input: LoginRequest!): User!
+}

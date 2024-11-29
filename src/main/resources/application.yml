@@ -2,6 +2,10 @@ spring:
   application:
     name: social-media-spring-backend
 
+  graphql:
+    graphiql:
+      enabled: true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -25,3 +29,4 @@ jwt:
   cookieName: AUTH_COOKIE
   expirationMs: 86400000
   secret: EA9F5F5267B7DE9497EE8AF5793E567B7DE9497EE8AF5793E57EE8AF5793E567B7
+

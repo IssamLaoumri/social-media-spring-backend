@@ -1,0 +1,9 @@
+type Query {
+    id: ID
+}
+type Mutation {}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
