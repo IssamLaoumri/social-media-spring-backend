@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: social-media-spring-backend
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Issam-laoumri1
+    url: jdbc:mysql://localhost:3306/social_media_db?createDatabaseIfNotExist=true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
+        web: debug
+
+
+jwt:
+  cookieName: AUTH_COOKIE
+  expirationMs: 86400000
+  secret: EA9F5F5267B7DE9497EE8AF5793E567B7DE9497EE8AF5793E57EE8AF5793E567B7
