@@ -27,14 +27,14 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
-    private final AuthEntryPointJwt unauthorizedHandler;
+    private final AuthEntryPointJwt authEntryPointJwt;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(request -> request.anyRequest().permitAll())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
+                .authorizeHttpRequests(request -> request.requestMatchers("/graphql").permitAll().anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(corsConfiguration()))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)

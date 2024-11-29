@@ -14,10 +14,13 @@ import com.laoumri.socialmediaspringbackend.security.services.JwtUtils;
 import com.laoumri.socialmediaspringbackend.services.AuthService;
 import graphql.GraphQLContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +31,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
     @Value("${jwt.cookieName}")
     private String cookieName;
@@ -78,14 +82,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User login(LoginRequest request, GraphQLContext context) {
-        Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        context.put(cookieName, jwtUtils.generateJwtTokenFromEmail(userDetails.getUsername()));
-        //        Set<String> roles = user.getRoles().stream().map(Role::getAuthority).collect(Collectors.toSet());
-        return (User) authentication.getPrincipal();
+        try {
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            String jwtToken = jwtUtils.generateJwtTokenFromEmail(userDetails.getUsername());
+            context.put(cookieName, jwtToken);
+
+            return (User) authentication.getPrincipal();
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("BAD_CREDENTIALS");
+        }
     }
 
     private String generateUniqueUsername(String firstname, String lastname) {

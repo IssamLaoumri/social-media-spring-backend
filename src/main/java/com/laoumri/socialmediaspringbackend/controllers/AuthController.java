@@ -5,7 +5,6 @@ import com.laoumri.socialmediaspringbackend.dto.requests.RegisterRequest;
 import com.laoumri.socialmediaspringbackend.entities.User;
 import com.laoumri.socialmediaspringbackend.services.AuthService;
 import graphql.GraphQLContext;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

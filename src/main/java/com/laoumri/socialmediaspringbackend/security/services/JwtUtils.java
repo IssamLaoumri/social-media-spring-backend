@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
@@ -42,12 +40,6 @@ public class JwtUtils {
                 .setExpiration(new Date(new Date().getTime() + expirationMs))
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public ResponseCookie getCleanJwtCookie(){
-        return ResponseCookie
-                .from(jwtCookie, null)
-                .build();
     }
 
     public String getEmailFromJwtToken(String token) {
