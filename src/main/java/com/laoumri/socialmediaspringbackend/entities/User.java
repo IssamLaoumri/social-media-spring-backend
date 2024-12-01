@@ -50,6 +50,13 @@ public class User implements UserDetails {
     @OrderBy("publishedAt desc")
     private List<Post> posts;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private List<User> friends;
+
     // META-DATA
     private boolean accountLocked = false;
     private boolean accountExpired = false;

@@ -58,8 +58,7 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
                     .build();
         }
 
-        if (ex instanceof AccessDeniedException) {
-            System.out.println("Access denied");
+        if (ex instanceof AccessDeniedException || ex instanceof UnauthorizedException) {
             return GraphQLError.newError()
                     .message("You are not authorized to access this resource.")
                     .location(env.getField().getSourceLocation())

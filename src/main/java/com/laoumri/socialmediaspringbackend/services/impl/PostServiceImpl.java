@@ -12,11 +12,11 @@ import com.laoumri.socialmediaspringbackend.exceptions.InvalidRequestException;
 import com.laoumri.socialmediaspringbackend.exceptions.ResourceNotFoundException;
 import com.laoumri.socialmediaspringbackend.exceptions.UnauthorizedException;
 import com.laoumri.socialmediaspringbackend.repositories.PostRepository;
+import com.laoumri.socialmediaspringbackend.repositories.UserRepository;
 import com.laoumri.socialmediaspringbackend.services.PostService;
+import com.laoumri.socialmediaspringbackend.utils.SecurityUtility;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,12 +29,12 @@ import java.util.*;
 @Transactional(propagation = Propagation.REQUIRED)
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     public String createPost(CreatePostRequest request) {
         // Get Authenticated User
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = SecurityUtility.getCurrentUser();
 
         // Validate the request if the update is for profile banners
         validate(request);
@@ -66,8 +66,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public String updatePost(UUID id, CreatePostRequest request) {
         // Get Authenticated User
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = SecurityUtility.getCurrentUser();
 
         // Fetch the existing post
         Post existingPost = postRepository.findById(id)
@@ -106,8 +105,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public String deletePost(UUID id) {
         // Get Authenticated User
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = SecurityUtility.getCurrentUser();
 
         // Fetch the existing post
         Post existingPost = postRepository.findById(id)
@@ -123,8 +121,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getPostById(UUID id) {
         // Get Authenticated User
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
+                .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));;
 
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("POST_NOT_FOUND"));
@@ -139,12 +137,13 @@ public class PostServiceImpl implements PostService {
                 return existingPost;
             }
             case PRIVATE -> {
-                System.out.println("you can't see it");
+                throw new UnauthorizedException("UNAUTHORIZED");
             }
             case FRIENDS -> {
-                // check if current user and post owner are friends
-                    // if yes, then you can see it
-                    // if no, then you can't
+                if(currentUser.getFriends().contains(existingPost.getUser()) && existingPost.getUser().getFriends().contains(currentUser)){
+                    return existingPost;
+                }
+                throw new UnauthorizedException("UNAUTHORIZED");
             }
         }
         return null;
@@ -153,30 +152,26 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getAllCurrentUserPosts() {
         // Get Authenticated User
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = SecurityUtility.getCurrentUser();
         return postRepository.findByUserId(currentUser.getId());
     }
 
     @Override
     public List<Post> getAllUserPosts(Long userId) {
         // Get Authenticated User
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
+                .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));
         List<Post> posts = postRepository.findByUserId(userId);
         List<Post> filteredPosts = new ArrayList<>();
         for(Post post : posts){
             switch (post.getVisibility()) {
-                case PUBLIC -> {
-                    filteredPosts.add(post);
-                }
+                case PUBLIC -> filteredPosts.add(post);
                 case PRIVATE -> {
-                    System.out.println("you can't see it");
                 }
                 case FRIENDS -> {
-                    // check if current user and post owner are friends
-                    // if yes, then you can see it
-                    // if no, then you can't
+                    if(currentUser.getFriends().contains(post.getUser()) && post.getUser().getFriends().contains(currentUser)){
+                        filteredPosts.add(post);
+                    }
                 }
             }
         }

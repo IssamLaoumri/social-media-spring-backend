@@ -9,6 +9,9 @@ import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 public class GlobalConfig {
     @Bean
     public RuntimeWiringConfigurer runtimeWiringConfigurer() {
-        return wiringBuilder -> wiringBuilder.scalar(ExtendedScalars.UUID).build();
+        return wiringBuilder -> wiringBuilder
+                .scalar(ExtendedScalars.UUID)
+                .scalar(ExtendedScalars.GraphQLLong)
+                .build();
     }
 }

@@ -1,0 +1,6 @@
+type FriendRequest {
+    id: UUID!
+    requester: User!
+    requested: User!
+    requestedAt: String!
+}

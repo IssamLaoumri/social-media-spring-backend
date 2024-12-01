@@ -1,0 +1,6 @@
+extend type Mutation {
+    sendRequest(userId: Long!) : String!
+    cancelRequest(requestId: UUID!): String!
+    acceptRequest(requestId: UUID!): String!
+    unfriend(userId: Long!): String!
+}
