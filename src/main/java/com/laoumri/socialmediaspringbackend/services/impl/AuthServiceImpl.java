@@ -81,21 +81,17 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User login(LoginRequest request, GraphQLContext context) {
-        try {
-            Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    public User login(LoginRequest request, GraphQLContext context) throws AuthenticationException {
+        Authentication authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            String jwtToken = jwtUtils.generateJwtTokenFromEmail(userDetails.getUsername());
-            context.put(cookieName, jwtToken);
+        String jwtToken = jwtUtils.generateJwtTokenFromEmail(userDetails.getUsername());
+        context.put(cookieName, jwtToken);
 
-            return (User) authentication.getPrincipal();
-        } catch (AuthenticationException e) {
-            throw new BadCredentialsException("BAD_CREDENTIALS");
-        }
+        return (User) authentication.getPrincipal();
     }
 
     private String generateUniqueUsername(String firstname, String lastname) {

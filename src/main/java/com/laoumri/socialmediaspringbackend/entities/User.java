@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,9 +42,13 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    // Optional User Data
+    // USER FUNCTIONALITY DATA
     private String profilePictureUrl;
     private String profileCoverUrl;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("publishedAt desc")
+    private List<Post> posts;
 
     // META-DATA
     private boolean accountLocked = false;

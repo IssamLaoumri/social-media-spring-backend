@@ -1,0 +1,49 @@
+scalar UUID
+@specifiedBy(url:
+"https://tools.ietf.org/html/rfc4122"
+)
+type Post {
+    id: UUID!
+    type: EPost!
+    visibility: EPostVisibility!
+    content: String
+    media: [Media!]!
+    user: User!
+    publishedAt: String
+}
+
+enum EPost {
+    POST_PROFILE_PICTURE
+    POST_COVER_PICTURE
+    POST_FEED
+}
+
+enum EPostVisibility {
+    PUBLIC
+    PRIVATE
+    FRIENDS
+}
+
+type Media {
+    id: UUID!
+    type: EMedia!
+    url: String!
+}
+
+enum EMedia {
+    PHOTO
+    VIDEO
+    AUDIO
+}
+
+input CreatePostInput {
+    type: EPost!
+    visibility: EPostVisibility!
+    content: String
+    media: [MediaInput!]!
+}
+
+input MediaInput {
+    type: EMedia!
+    url: String!
+}

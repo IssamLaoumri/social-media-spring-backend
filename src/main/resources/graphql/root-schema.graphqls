@@ -1,6 +1,4 @@
-type Query {
-    id: ID
-}
+type Query {}
 type Mutation {}
 
 schema {

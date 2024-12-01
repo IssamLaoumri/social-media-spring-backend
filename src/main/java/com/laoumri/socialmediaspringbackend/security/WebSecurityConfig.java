@@ -33,8 +33,8 @@ public class WebSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
-                .authorizeHttpRequests(request -> request.requestMatchers("/graphql").permitAll().anyRequest().authenticated())
+                //.exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
+                .authorizeHttpRequests(request -> request.requestMatchers("/graphql").permitAll().anyRequest().denyAll())
                 .cors(cors -> cors.configurationSource(corsConfiguration()))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)

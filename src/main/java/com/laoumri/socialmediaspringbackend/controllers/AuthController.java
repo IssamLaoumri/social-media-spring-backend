@@ -8,10 +8,12 @@ import graphql.GraphQLContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("isAnonymous()")
 public class AuthController {
     private final AuthService authService;
 
@@ -24,4 +26,5 @@ public class AuthController {
     public User login(@Argument(name = "input") LoginRequest request, GraphQLContext context){
      return authService.login(request, context);
     }
+
 }

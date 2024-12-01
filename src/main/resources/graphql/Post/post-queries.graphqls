@@ -1,0 +1,5 @@
+extend type Query {
+    getPostById(postId: UUID!): Post!
+    getAllCurrentUserPosts: [Post]
+    getAllUserPosts(userId: ID!): [Post]
+}
