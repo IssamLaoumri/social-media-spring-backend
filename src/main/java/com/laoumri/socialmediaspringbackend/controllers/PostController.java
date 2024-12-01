@@ -1,6 +1,6 @@
 package com.laoumri.socialmediaspringbackend.controllers;
 
-import com.laoumri.socialmediaspringbackend.dto.requests.CreatePostRequest;
+import com.laoumri.socialmediaspringbackend.dto.CreatePostRequest;
 import com.laoumri.socialmediaspringbackend.entities.Post;
 import com.laoumri.socialmediaspringbackend.services.PostService;
 import lombok.RequiredArgsConstructor;

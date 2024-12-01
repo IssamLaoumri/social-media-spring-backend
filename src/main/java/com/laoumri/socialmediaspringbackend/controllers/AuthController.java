@@ -1,7 +1,7 @@
 package com.laoumri.socialmediaspringbackend.controllers;
 
-import com.laoumri.socialmediaspringbackend.dto.requests.LoginRequest;
-import com.laoumri.socialmediaspringbackend.dto.requests.RegisterRequest;
+import com.laoumri.socialmediaspringbackend.dto.LoginRequest;
+import com.laoumri.socialmediaspringbackend.dto.RegisterRequest;
 import com.laoumri.socialmediaspringbackend.entities.User;
 import com.laoumri.socialmediaspringbackend.services.AuthService;
 import graphql.GraphQLContext;

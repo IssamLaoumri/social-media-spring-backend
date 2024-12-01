@@ -30,6 +30,8 @@ public class Post {
     private String content;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Media> media;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Comment> comments;
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private Instant publishedAt;

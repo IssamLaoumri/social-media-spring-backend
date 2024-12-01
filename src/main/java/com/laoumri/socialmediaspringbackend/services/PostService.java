@@ -1,6 +1,6 @@
 package com.laoumri.socialmediaspringbackend.services;
 
-import com.laoumri.socialmediaspringbackend.dto.requests.CreatePostRequest;
+import com.laoumri.socialmediaspringbackend.dto.CreatePostRequest;
 import com.laoumri.socialmediaspringbackend.entities.Post;
 
 import java.util.List;

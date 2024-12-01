@@ -1,7 +1,7 @@
 package com.laoumri.socialmediaspringbackend.services.impl;
 
-import com.laoumri.socialmediaspringbackend.dto.requests.CreatePostRequest;
-import com.laoumri.socialmediaspringbackend.dto.requests.MediaRequest;
+import com.laoumri.socialmediaspringbackend.dto.CreatePostRequest;
+import com.laoumri.socialmediaspringbackend.dto.MediaRequest;
 import com.laoumri.socialmediaspringbackend.entities.Media;
 import com.laoumri.socialmediaspringbackend.entities.Post;
 import com.laoumri.socialmediaspringbackend.entities.User;
@@ -122,7 +122,7 @@ public class PostServiceImpl implements PostService {
     public Post getPostById(UUID id) {
         // Get Authenticated User
         User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
-                .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));;
+                .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));
 
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("POST_NOT_FOUND"));

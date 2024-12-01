@@ -1,0 +1,5 @@
+extend type Mutation {
+    addComment(postId: UUID!, request: CommentRequest!): String!
+    deleteComment(commentId: UUID!): String!
+    updateComment(commentId: UUID!, request: CommentRequest!): String!
+}

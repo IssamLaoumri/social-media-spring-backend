@@ -1,7 +1,7 @@
 package com.laoumri.socialmediaspringbackend.services.impl;
 
-import com.laoumri.socialmediaspringbackend.dto.requests.LoginRequest;
-import com.laoumri.socialmediaspringbackend.dto.requests.RegisterRequest;
+import com.laoumri.socialmediaspringbackend.dto.LoginRequest;
+import com.laoumri.socialmediaspringbackend.dto.RegisterRequest;
 import com.laoumri.socialmediaspringbackend.entities.Role;
 import com.laoumri.socialmediaspringbackend.entities.User;
 import com.laoumri.socialmediaspringbackend.enums.EGender;
@@ -15,10 +15,8 @@ import com.laoumri.socialmediaspringbackend.services.AuthService;
 import graphql.GraphQLContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

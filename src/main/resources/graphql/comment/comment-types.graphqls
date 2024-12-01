@@ -1,0 +1,13 @@
+type Comment {
+    id: UUID!
+    content: String
+    media: Media
+    post: Post!
+    commentBy: User!
+    commentedAt: String!
+}
+
+input CommentRequest {
+    content: String
+    media: MediaInput
+}

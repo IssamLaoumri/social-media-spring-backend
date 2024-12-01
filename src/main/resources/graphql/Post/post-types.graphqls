@@ -5,7 +5,8 @@ type Post {
     content: String
     media: [Media!]!
     user: User!
-    publishedAt: String
+    publishedAt: String!
+    comments: [Comment]
 }
 
 enum EPost {

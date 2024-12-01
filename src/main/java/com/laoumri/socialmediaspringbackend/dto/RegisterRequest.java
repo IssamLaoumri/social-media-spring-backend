@@ -1,4 +1,4 @@
-package com.laoumri.socialmediaspringbackend.dto.requests;
+package com.laoumri.socialmediaspringbackend.dto;
 
 import lombok.Builder;
 import lombok.Getter;
