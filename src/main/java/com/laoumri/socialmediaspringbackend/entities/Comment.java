@@ -6,6 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +27,11 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "posted_in")
     private Post post;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> replies;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "comment_by")
     private User commentBy;

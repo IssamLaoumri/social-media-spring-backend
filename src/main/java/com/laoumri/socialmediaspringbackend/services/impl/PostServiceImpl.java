@@ -124,7 +124,7 @@ public class PostServiceImpl implements PostService {
         User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
                 .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));
 
-        Post existingPost = postRepository.findById(id)
+        Post existingPost = postRepository.findPostByIdWithTopLevelComments(id)
                 .orElseThrow(() -> new ResourceNotFoundException("POST_NOT_FOUND"));
         User postOwner = existingPost.getUser();
 
@@ -153,7 +153,7 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllCurrentUserPosts() {
         // Get Authenticated User
         User currentUser = SecurityUtility.getCurrentUser();
-        return postRepository.findByUserId(currentUser.getId());
+        return postRepository.findPostsByUserIdWithTopLevelComments(currentUser.getId());
     }
 
     @Override
@@ -161,7 +161,7 @@ public class PostServiceImpl implements PostService {
         // Get Authenticated User
         User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
                 .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));
-        List<Post> posts = postRepository.findByUserId(userId);
+        List<Post> posts = postRepository.findPostsByUserIdWithTopLevelComments(userId);
         List<Post> filteredPosts = new ArrayList<>();
         for(Post post : posts){
             switch (post.getVisibility()) {

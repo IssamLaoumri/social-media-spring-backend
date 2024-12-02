@@ -5,6 +5,8 @@ type Comment {
     post: Post!
     commentBy: User!
     commentedAt: String!
+    parent: Comment
+    replies: [Comment]
 }
 
 input CommentRequest {

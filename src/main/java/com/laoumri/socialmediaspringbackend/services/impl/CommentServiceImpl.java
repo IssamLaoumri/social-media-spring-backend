@@ -31,14 +31,14 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Override
-    public String addComment(UUID postId,CommentRequest request) {
+    public String addCommentToPost(UUID postId, CommentRequest request) {
         // Get authenticated user
         User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
                 .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));
 
         // Get related post
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("POST_NOT_FOUND"));
-        // What if the user try to comment on a post he is not allowed to
+        // What if the user try to comment on a post he is not allowed to see
         switch (post.getVisibility()){
             case PRIVATE -> throw new UnauthorizedException("UNAUTHORIZED");
             case FRIENDS -> {
@@ -111,5 +111,46 @@ public class CommentServiceImpl implements CommentService {
         comment.setCommentedAt(Instant.now());
         commentRepository.save(comment);
         return "COMMENT_UPDATE_SUCCESS";
+    }
+
+    @Override
+    public String addReplyToComment(UUID commentId, CommentRequest request) {
+        // Get authenticated user
+        User currentUser = userRepository.findById(SecurityUtility.getCurrentUser().getId())
+                .orElseThrow(() -> new InternalAuthenticationServiceException("SOMETHING_WENT_WRONG"));
+
+        Comment parentComment = commentRepository.findById(commentId).orElseThrow(()->new ResourceNotFoundException("COMMENT_NOT_FOUND"));
+
+        Post relatedPost = parentComment.getPost();
+
+        // What if the user try to reply to a comment on post he is not allowed to see
+        switch (relatedPost.getVisibility()){
+            case PRIVATE -> throw new UnauthorizedException("UNAUTHORIZED");
+            case FRIENDS -> {
+                if(!currentUser.getFriends().contains(relatedPost.getUser()) || !relatedPost.getUser().getFriends().contains(currentUser)){
+                    throw new UnauthorizedException("UNAUTHORIZED");
+                }
+            }
+        }
+
+        // Create and save the media and the comment
+        Media media = null;
+        if(request.getMedia() != null){
+            media = Media.builder()
+                    .url(request.getMedia().getUrl())
+                    .type(EMedia.valueOf(request.getMedia().getType()))
+                    .build();
+        }
+        Comment newComment = Comment.builder()
+                .media(media)
+                .commentedAt(Instant.now())
+                .content(request.getContent())
+                .parent(parentComment)
+                .post(relatedPost)
+                .commentBy(currentUser)
+                .build();
+
+        commentRepository.save(newComment);
+        return "REPLY_SUCCESS";
     }
 }

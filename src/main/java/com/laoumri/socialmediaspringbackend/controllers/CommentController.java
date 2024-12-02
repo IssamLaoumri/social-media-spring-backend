@@ -16,7 +16,7 @@ public class CommentController {
 
     @MutationMapping
     public String addComment(@Argument UUID postId, @Argument CommentRequest request){
-        return commentService.addComment(postId, request);
+        return commentService.addCommentToPost(postId, request);
     }
 
     @MutationMapping
@@ -27,5 +27,10 @@ public class CommentController {
     @MutationMapping
     public String updateComment(@Argument UUID commentId, @Argument CommentRequest request){
         return commentService.updateComment(commentId, request);
+    }
+
+    @MutationMapping
+    public String replyComment(@Argument UUID commentId, @Argument CommentRequest request){
+        return commentService.addReplyToComment(commentId, request);
     }
 }
