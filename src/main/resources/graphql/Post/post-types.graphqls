@@ -1,5 +1,5 @@
 type Post {
-    id: UUID!
+    id: UUID
     type: EPost!
     visibility: EPostVisibility!
     content: String
@@ -7,6 +7,7 @@ type Post {
     user: User!
     publishedAt: String!
     comments: [Comment]
+    reactions: [Reaction]
 }
 
 enum EPost {

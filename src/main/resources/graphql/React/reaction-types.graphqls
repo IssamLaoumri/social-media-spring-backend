@@ -1,0 +1,13 @@
+type Reaction {
+    id: UUID!
+    react: EReact!
+    reactedBy: User
+}
+
+enum EReact {
+    LIKE
+    LOVE
+    CONGRATS
+    CLAP
+    FUNNY
+}

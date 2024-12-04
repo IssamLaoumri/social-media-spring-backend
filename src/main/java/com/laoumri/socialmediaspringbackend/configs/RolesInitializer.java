@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 public class RolesInitializer {
     @Bean
-    public CommandLineRunner initDatabase(RoleRepository roleRepository) {
+    public CommandLineRunner initRoles(RoleRepository roleRepository) {
         return args -> {
             Role c1 = new Role(1, ERole.ROLE_USER);
             Role c2 = new Role(2, ERole.ROLE_MODERATOR);

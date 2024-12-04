@@ -1,0 +1,4 @@
+extend type Mutation {
+    addReaction(reactableId: UUID!,reactableType: String!, reaction: EReact!): String!
+    deleteReaction(reactableId: UUID!,reactableType: String!): String!
+}

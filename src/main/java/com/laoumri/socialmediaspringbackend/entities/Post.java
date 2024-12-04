@@ -4,12 +4,10 @@ import com.laoumri.socialmediaspringbackend.enums.EPost;
 import com.laoumri.socialmediaspringbackend.enums.EPostVisibility;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -18,11 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Post {
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(columnDefinition = "VARCHAR(36)")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID id;
+public class Post extends Reactable{
     @Enumerated(EnumType.STRING)
     private EPost type;
     @Enumerated(EnumType.STRING)
@@ -34,5 +28,7 @@ public class Post {
     private List<Comment> comments;
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reactable")
+    private Set<Reaction> reactions;
     private Instant publishedAt;
 }
