@@ -1,7 +1,7 @@
 type Reaction {
     id: UUID!
     react: EReact!
-    reactedBy: User
+    reactedBy: User!
 }
 
 enum EReact {

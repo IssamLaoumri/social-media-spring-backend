@@ -59,6 +59,7 @@ public class ReactionServiceImpl implements ReactionService {
         Reaction reaction = reactionRepository.findByReactableAndReactedBy(reactable, currentUser)
                 .orElseThrow(() -> new ResourceNotFoundException("REACTION_NOT_FOUND"));
 
+
         reactionRepository.delete(reaction);
         return "REACTION_DELETED";
     }

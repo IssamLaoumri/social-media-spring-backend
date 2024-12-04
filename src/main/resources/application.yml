@@ -9,7 +9,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Issam-laoumri1
+    password: ENC(/bFfgj5amgDRJ6tNYTxxN+n6KpCF17jBv2cS6mOt8+CSTRaZXL2a838pC/rOgS9S)
     url: jdbc:mysql://localhost:3306/social_media_db?createDatabaseIfNotExist=true
 
   jpa:

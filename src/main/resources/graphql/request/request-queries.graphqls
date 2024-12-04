@@ -1,0 +1,4 @@
+extend type Query {
+    getFriendRequests: [FriendRequest]!
+    getSentRequests: [FriendRequest]!
+}

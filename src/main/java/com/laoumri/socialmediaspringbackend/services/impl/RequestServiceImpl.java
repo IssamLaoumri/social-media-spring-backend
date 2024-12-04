@@ -134,4 +134,16 @@ public class RequestServiceImpl implements RequestService {
         userRepository.saveAll(List.of(currentUser, friend));
         return "UNFRIEND_SUCCESS";
     }
+
+    @Override
+    public List<FriendRequest> getFriendRequests() {
+        User currentUser = SecurityUtility.getCurrentUser();
+        return requestRepository.findByRequested(currentUser);
+    }
+
+    @Override
+    public List<FriendRequest> getSentRequests() {
+        User currentUser = SecurityUtility.getCurrentUser();
+        return requestRepository.findByRequester(currentUser);
+    }
 }
